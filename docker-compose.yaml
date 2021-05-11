@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  coffes:
+    container_name: coffes
+    build:
+      dockerfile: Dockerfile
+      context: ./coffes-services
+    restart: on-failure:5
+    ports:
+      - ${COFFES_SERVICE_PORT}:3000
+    depends_on:
+      - rabbitmq
+  cats:
+    container_name: cats
+    build:
+      dockerfile: Dockerfile
+      context: ./cats-services
+    restart: on-failure:5
+    ports:
+      - ${CATS_SERVICE_PORT}:3000
+    depends_on:
+      - rabbitmq
+  rabbitmq:
+    container_name: rabbitmq-sample
+    hostname: rabbitmq-sample
+    image: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
